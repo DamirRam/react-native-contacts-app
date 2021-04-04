@@ -45,7 +45,7 @@
       <TouchableOpacity style={[styles.userCard, {height: isHidden ? 190 : 94}]} onPress={showHidden}>
         <View style={styles.mainBox}>
           <View style={styles.mainIco}>
-            {<Image style={styles.mainImage} source={{uri: props.data.image}} />}
+            <Image style={styles.mainImage} source={{uri: props.data.image}} />
           </View>
           <View style={styles.mainText}>
             <Text style={styles.mainName}>{props.data.name}</Text>

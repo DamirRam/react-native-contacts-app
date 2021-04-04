@@ -1,34 +1,42 @@
- import React from 'react';
- import {
-   StyleSheet,
-   ScrollView
- } from 'react-native';
- import UserCard from './src/components/userCard';
- import {DATA} from './src/data';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import Header from './src/components/header';
+import TapBar from './src/components/tapbar';
+import Screen_1 from './src/screens/screen_1';
+import Screen_2 from './src/screens/screen_2';
+import Screen_3 from './src/screens/screen_3';
 
- const App = () => {
+const screenTitles = ['Contacts', 'Log In', 'Gallery'];
+
+const App = () => {
+  const [activeScreen, setActiveScreen] = useState (0);
+
   return (
-    <ScrollView
-    style={styles.container}
-    contentContainerStyle={styles.scrollContainer}
-    >
-    {DATA.map((user, index) => {
-      return <UserCard data={user} key={index} index={index}/>
-      })
-    }
-    </ScrollView>
-  )
- };
+    <View style={styles.root}>
+      <Header 
+      changeScreen={setActiveScreen}
+      activeScreen={activeScreen}
+      screenTitles={screenTitles}/>
+      {  
+        (activeScreen === 0) ?
+          <>
+            <Screen_1 /> 
+            <TapBar changeScreen={setActiveScreen} />
+          </>
+          :
+        (activeScreen === 1) ?
+          <Screen_2 changeScreen={setActiveScreen} />
+          :
+          <Screen_3/>
+      }
+    </View>
+  );
+};
 
- const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  scrollContainer: {
-    paddingTop: 100,
-    justifyContent: 'center',
-    alignItems: 'center'
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
   }
- });
+});
 
- export default App;
+export default App;
