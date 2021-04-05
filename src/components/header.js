@@ -9,7 +9,8 @@ import CircleButton from './circleButton';
 
 const Header = ({changeScreen, activeScreen, screenTitles}) => {
  return (
-  <View style={[styles.root, {backgroundColor: (activeScreen === 2) ?  '#000' : '#fff'}]}>
+  <View style={[styles.root, {backgroundColor: (activeScreen === 2) ?  '#000' : '#fff',
+      justifyContent: (activeScreen === 2) ?  'space-between' : 'flex-start'}]}>
     {
       (activeScreen === 1) && 
       <CircleButton changeScreen={changeScreen} />
@@ -35,7 +36,6 @@ const styles = StyleSheet.create({
  root: {
    display: 'flex',
    flexDirection: 'row',
-   justifyContent: 'space-between',
    alignItems: 'center',
    paddingTop: 31,
    paddingBottom: 10,
@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
    width: '100%'
  },
  headerText: {
-   alignSelf: 'flex-start',
    paddingLeft: 10,
    fontSize: 35,
    color: '#0A0A0A'
