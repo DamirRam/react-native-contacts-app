@@ -17,9 +17,9 @@
 
  const Address = ({title, description}) => {
   return (
-    <View>
-      <Text style={styles.AddressTitle}>{title}</Text>
-      <Text style={styles.AddressText}>{description}</Text>
+    <View style={styles.adressBox}>
+      <Text style={styles.addressTitle}>{title}</Text>
+      <Text style={styles.addressText}>{description}</Text>
     </View>
     )
  }
@@ -42,20 +42,27 @@
    }
 
   return (
-      <TouchableOpacity style={[styles.userCard, {height: isHidden ? 190 : 94}]} onPress={showHidden}>
+      <TouchableOpacity style={styles.userCard} onPress={showHidden}>
         <View style={styles.mainBox}>
           <View style={styles.mainIco}>
-            <Image style={styles.mainImage} source={{uri: props.data.image}} />
+            <Image style={styles.mainImage} source={{uri: props.data.picture.medium}} />
           </View>
           <View style={styles.mainText}>
-            <Text style={styles.mainName}>{props.data.name}</Text>
+            <Text style={styles.mainName}>
+              {
+              `${props.data.name.title} ${props.data.name.first} ${props.data.name.last}`
+              }
+            </Text>
             <Text style={styles.mainPhone}>Phone: {props.data.phone}</Text>
           </View>
         </View>
         {
           (isHidden) ?
           <View style={styles.hiddenBox}>
-            <Address title='ADDRESS' description={props.data.address} />
+            <Address title='ADDRESS' description=
+            {
+             `${props.data.location.country} ${props.data.location.city} ${props.data.location.street.name} ${props.data.location.street.number}`
+            } />
             <Address title='EMAIL' description={props.data.email} />
           </View>
           :
@@ -68,6 +75,7 @@
  const styles = StyleSheet.create({
   userCard: {
     width: 363,
+    height: 'auto',
     paddingBottom: 15,
     marginBottom: 9,
     backgroundColor: "#E5E5E5",
@@ -85,11 +93,13 @@
     color: "#00add3"
   },
   mainIco: {
+    alignSelf: 'center',
     width: 63,
     height: 63,
     borderWidth: 5,
     borderColor: "#00add3",
-    borderRadius: 32
+    borderRadius: 32,
+    overflow: 'hidden'
   },
   mainImage: {
     width: "100%",
@@ -101,19 +111,24 @@
     flexDirection: "row"
   },
   mainText: {
+    flex: 3,
     paddingLeft: 31
   },
   hiddenBox: {
     paddingLeft: 115
   },
-  AddressTitle: {
+  addressTitle: {
     fontSize: 15,
     fontWeight: "700",
     color: "#00add3"
   },
-  AddressText: {
+  addressText: {
     fontSize: 15,
     fontWeight: "400"
+  },
+  adressBox: {
+    flex: 3,
+    paddingRight: 10
   }
  })
 

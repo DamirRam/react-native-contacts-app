@@ -1,24 +1,68 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   FlatList,
   View,
+  Alert
 } from 'react-native';
 import AlbumCard from '../components/albumCard';
-import {albumDATA} from '../albumData';
+import LoadingIndicator from '../components/loadingIndicator';
 
-const Screen_3 = () => {
+const dataUrl = 'https://jsonplaceholder.typicode.com/photos?_limit=10';
+
+const Screen_3 = () => { 
+  const[data, setData] = useState([]);
+  const[refresh, setRefresh] = useState(false);
+  const[isLoading, setIsLoading] = useState (true);
+
+  useEffect(
+    () => {
+      fetchHandler()
+    },
+    [refresh]
+  )
+
+  const fetchHandler = () => {
+    fetch(dataUrl)
+      .then(response => response.json())
+      .then(responseJson => setData(responseJson))
+      .catch((error) => {
+        setIsLoading(false)
+        AlertHandler(error)
+      })
+      .finally(() => setIsLoading(false))
+  }
+  console.log(data)
+  const AlertHandler = (error) =>{
+    Alert.alert(
+      `${error}`,
+      "Resend the request?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () => setRefresh(!refresh) }
+      ]
+    );
+  }
+  
   const renderCard = ({ item }) => (
-    <AlbumCard imageUri={item.image} text={item.text}/>
+    <AlbumCard imageUri={item.thumbnailUrl} text={item.title} albumId={item.albumId}/>
   );
 
   return (
   <View style={styles.root}>
-     <FlatList
-        data={albumDATA}
-        renderItem={renderCard}
-        style={styles.flatlist}
-      />
+    {
+    (isLoading) &&
+    <LoadingIndicator />
+    }
+    <FlatList
+      data={data}
+      renderItem={renderCard}
+      style={styles.flatlist}
+    />
   </View>  
   )
 };

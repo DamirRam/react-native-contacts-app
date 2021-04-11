@@ -20,8 +20,8 @@ const App = () => {
       {  
         (activeScreen === 0) ?
           <>
-            <Screen_1 /> 
-            <TapBar changeScreen={setActiveScreen} />
+            <Screen_1/>
+            <TapBar changeScreen={setActiveScreen} screenNames={screenTitles}/>
           </>
           :
         (activeScreen === 1) ?
@@ -35,7 +35,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
+    flex: 1
   }
 });
 

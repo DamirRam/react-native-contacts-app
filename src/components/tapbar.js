@@ -6,9 +6,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 
-const screenNames = ['Screen 1', 'Screen 2', 'Screen 3'];
-
-const TapBar = ({changeScreen}) => {
+const TapBar = ({changeScreen, screenNames}) => {
  return (
   <View style={styles.root}>
     {screenNames.map((item, index) => (

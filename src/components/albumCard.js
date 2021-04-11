@@ -6,7 +6,7 @@ import {
   Image
 } from 'react-native';
 
-const AlbumCard =({imageUri, text})=> {
+const AlbumCard =({imageUri, text, albumId})=> {
   return (
     <View style={styles.albumContainer}>
       <Image style={styles.image} source={{uri: imageUri}} />
@@ -14,7 +14,7 @@ const AlbumCard =({imageUri, text})=> {
         <Text style={styles.description}>{text}</Text>
         <View style={styles.titleBlock}>
           <Text style={styles.title}>Album</Text>
-          <Text style={styles.titleCircle}>2</Text>
+          <Text style={styles.titleCircle}>{albumId}</Text>
         </View>
       </View>
     </View>
@@ -24,8 +24,9 @@ const AlbumCard =({imageUri, text})=> {
 const styles = StyleSheet.create({
   albumContainer: {
     paddingTop: 13,
+    paddingBottom: 13,
     marginBottom: 20,
-    height: 172,
+    height: 'auto',
     width: 363,
     borderWidth: 1,
     borderColor: '#444444',
@@ -46,6 +47,7 @@ const styles = StyleSheet.create({
     paddingTop: 9
   },
   description: {
+    flex: 3,
     color: '#fff',
     fontSize: 16
   },
