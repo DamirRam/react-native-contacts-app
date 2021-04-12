@@ -21,14 +21,15 @@ const ModalWindow = ({isVisible, setIsVisible, activeAlbumIndex, setActiveAlbumI
                 }
               }
               mode='dropdown'
+              dropdownIconColor='#fff'
               style={styles.pickerBox}>
               {
-                dataAlbum.map((item, index) => {
+                dataAlbum.map((item) => {
                   return (<Picker.Item 
                     style={styles.pickerText} 
                     label={item.title} 
                     value={item.value}
-                    key={index} />)
+                   />)
                 })
               }
             </Picker>
@@ -64,7 +65,8 @@ const styles = StyleSheet.create({
     pickerText: {
         color: '#fff',
         backgroundColor: '#000',
-        borderColor: '#444'
+        borderColor: '#444',
+        borderWidth: 1
     }
 })
 

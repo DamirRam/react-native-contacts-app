@@ -7,7 +7,7 @@ import Screen_2 from './src/screens/screen_2';
 import Screen_3 from './src/screens/screen_3';
 
 const screenTitles = ['Contacts', 'Log In', 'Gallery'];
-const dataUsersUrl = 'https://randomuser.me/api/?results=30';
+const dataUsersUrl = 'https://randomuser.me/api/?results=20';
 
 
 const App = () => {
