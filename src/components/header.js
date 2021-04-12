@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,28 +7,30 @@ import {
 } from 'react-native';
 import CircleButton from './circleButton';
 
-const Header = ({changeScreen, activeScreen, screenTitles}) => {
+const Header = ({changeScreen, activeScreen, screenTitles, setIsVisibleModal, activeAlbumIndex}) => {
  return (
-  <View style={[styles.root, {backgroundColor: (activeScreen === 2) ?  '#000' : '#fff',
-      justifyContent: (activeScreen === 2) ?  'space-between' : 'flex-start'}]}>
-    {
-      (activeScreen === 1) && 
-      <CircleButton changeScreen={changeScreen} />
-    }
-    <Text style={[styles.headerText, {color: (activeScreen === 2) ? '#fff' : '#000'}]}>
-      {screenTitles[activeScreen]}
-    </Text>
-    {
-      (activeScreen === 2) && 
-       
-        <View style={styles.titleBlock}>
-          <TouchableOpacity>
-            <Text style={styles.title}>Select album</Text>
-          </TouchableOpacity>  
-          <Text style={styles.titleCircle}>2</Text>
-        </View>
-    }
-  </View>
+    <View style={[styles.root, {backgroundColor: (activeScreen === 2) ?  '#000' : '#fff',
+        justifyContent: (activeScreen === 2) ?  'space-between' : 'flex-start'}]}>    
+      {
+        (activeScreen === 1) && 
+        <CircleButton changeScreen={changeScreen} />
+      }
+      <Text style={[styles.headerText, {color: (activeScreen === 2) ? '#fff' : '#000'}]}>
+        {screenTitles[activeScreen]}
+      </Text>
+      {
+        (activeScreen === 2) && 
+        
+          <View style={styles.titleBlock}>
+            <TouchableOpacity 
+              onPress={()=> setIsVisibleModal(true)}
+            >
+              <Text style={styles.title}>Select album</Text>
+            </TouchableOpacity>  
+            <Text style={styles.titleCircle}>{activeAlbumIndex+1}</Text>
+          </View>
+      }
+    </View>
  )
 };
 

@@ -7,32 +7,34 @@ import {
 } from 'react-native';
 import AlbumCard from '../components/albumCard';
 import LoadingIndicator from '../components/loadingIndicator';
+import ModalWindow from './modalScreen';
+import {dataAlbum} from '../dataAlbum'
 
-const dataUrl = 'https://jsonplaceholder.typicode.com/photos?_limit=10';
-
-const Screen_3 = () => { 
+const Screen_3 = ({isVisibleModal, setIsVisibleModal, activeAlbumIndex, setActiveAlbumIndex}) => { 
   const[data, setData] = useState([]);
   const[refresh, setRefresh] = useState(false);
   const[isLoading, setIsLoading] = useState (true);
 
   useEffect(
     () => {
-      fetchHandler()
+      asyncHandler(dataAlbum[activeAlbumIndex].value)
     },
     [refresh]
   )
 
-  const fetchHandler = () => {
-    fetch(dataUrl)
-      .then(response => response.json())
-      .then(responseJson => setData(responseJson))
-      .catch((error) => {
-        setIsLoading(false)
-        AlertHandler(error)
-      })
-      .finally(() => setIsLoading(false))
+  const asyncHandler = async (url) => {
+    try {
+      const response = await fetch(url)
+      const albums = await response.json()
+      setData(albums)
+      setIsLoading(false) 
+    } catch (error) {
+      setIsLoading(false)
+      AlertHandler(error)
+    }
+    
   }
-  console.log(data)
+
   const AlertHandler = (error) =>{
     Alert.alert(
       `${error}`,
@@ -49,11 +51,22 @@ const Screen_3 = () => {
   }
   
   const renderCard = ({ item }) => (
-    <AlbumCard imageUri={item.thumbnailUrl} text={item.title} albumId={item.albumId}/>
+    <AlbumCard 
+    imageUri={item.thumbnailUrl} 
+    text={item.title} 
+    albumId={activeAlbumIndex+1}/>
   );
 
   return (
   <View style={styles.root}>
+    <ModalWindow 
+    isVisible={isVisibleModal} 
+    setIsVisible={setIsVisibleModal}
+    activeAlbumIndex={activeAlbumIndex}
+    setActiveAlbumIndex={setActiveAlbumIndex}
+    asyncHandler={asyncHandler}
+    dataAlbum={dataAlbum}
+    />
     {
     (isLoading) &&
     <LoadingIndicator />
@@ -61,7 +74,6 @@ const Screen_3 = () => {
     <FlatList
       data={data}
       renderItem={renderCard}
-      style={styles.flatlist}
     />
   </View>  
   )
@@ -72,10 +84,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#000'
-  },
-  flatlist: {
-    paddingTop: 20,
-    paddingBottom: 20
   }
 });
 

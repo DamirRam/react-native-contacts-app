@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
   albumContainer: {
     paddingTop: 13,
     paddingBottom: 13,
-    marginBottom: 20,
+    marginBottom: 10,
+    marginTop: 10,
     height: 'auto',
     width: 363,
     borderWidth: 1,

@@ -8,11 +8,7 @@ import {
 import UserCard from '../components/userCard';
 import LoadingIndicator from '../components/loadingIndicator';
 
-const dataUrl = 'https://randomuser.me/api/?results=10';
-
-
-
-const Screen_1 = () => {
+const Screen_1 = ({dataUrl}) => {
   const[data, setData] = useState([]);
   const[refresh, setRefresh] = useState(false);
   const[isLoading, setIsLoading] = useState (true);
@@ -77,6 +73,7 @@ const styles = StyleSheet.create({
    justifyContent: 'center',
    alignItems: 'center',
    paddingTop: 25,
+   paddingBottom: 70
  }
 });
 
