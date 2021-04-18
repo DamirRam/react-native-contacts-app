@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, Alert, View} from 'react-native';
-import UserCard from '../components/userCard';
-import LoadingIndicator from '../components/loadingIndicator';
+import UserCard from '../components/UserCard';
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const Screen_1 = ({dataUrl}) => {
   const [data, setData] = useState([]);

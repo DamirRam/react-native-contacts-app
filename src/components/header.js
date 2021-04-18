@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import CircleButton from './circleButton';
+import CircleButton from './CircleButton';
 
 const Header = ({
   changeScreen,

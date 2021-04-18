@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import Header from './src/components/header';
-import TapBar from './src/components/tapbar';
-import Screen_1 from './src/screens/screen_1';
-import Screen_2 from './src/screens/screen_2';
-import Screen_3 from './src/screens/screen_3';
+import Header from './src/components/Header';
+import TapBar from './src/components/TapBar';
+import Screen_1 from './src/screens/Screen_1';
+import Screen_2 from './src/screens/Screen_2';
+import Screen_3 from './src/screens/Screen_3';
 
 const screenTitles = ['Contacts', 'Log In', 'Gallery'];
 const dataUsersUrl = 'https://randomuser.me/api/?results=20';

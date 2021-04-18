@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image
-} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 
-const AlbumCard =({imageUri, text, albumId})=> {
+const AlbumCard = ({imageUri, text, albumId}) => {
   return (
     <View style={styles.albumContainer}>
       <Image style={styles.image} source={{uri: imageUri}} />
@@ -18,8 +13,8 @@ const AlbumCard =({imageUri, text, albumId})=> {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   albumContainer: {
@@ -32,12 +27,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#444444',
     borderRadius: 15,
-    zIndex: 2
+    zIndex: 2,
   },
   image: {
     alignSelf: 'center',
     width: '94%',
-    height: 118
+    height: 118,
   },
   albumTextBlock: {
     flex: 10,
@@ -45,22 +40,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
     width: '94%',
-    paddingTop: 9
+    paddingTop: 9,
   },
   description: {
     flex: 3,
     color: '#fff',
-    fontSize: 16
+    fontSize: 16,
   },
   titleBlock: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   title: {
     marginRight: 5,
     color: '#00ADD3',
     fontSize: 16,
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   titleCircle: {
     height: 21,
@@ -68,8 +63,8 @@ const styles = StyleSheet.create({
     borderRadius: 11,
     backgroundColor: '#00ADD3',
     color: '#fff',
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });
 
 export default AlbumCard;
