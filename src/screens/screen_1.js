@@ -2,8 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, Alert, View} from 'react-native';
 import UserCard from '../components/UserCard';
 import LoadingIndicator from '../components/LoadingIndicator';
+import Header from '../components/Header';
 
-const Screen_1 = ({dataUrl}) => {
+const dataUsersUrl = 'https://randomuser.me/api/?results=5';
+
+const Screen_1 = () => {
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +16,7 @@ const Screen_1 = ({dataUrl}) => {
   }, [refresh]);
 
   const fetchHandler = () => {
-    fetch(dataUrl)
+    fetch(dataUsersUrl)
       .then(response => response.json())
       .then(responseJson => setData(responseJson.results))
       .catch(error => {
@@ -37,6 +40,7 @@ const Screen_1 = ({dataUrl}) => {
   return (
     <View style={styles.container}>
       {isLoading && <LoadingIndicator />}
+      <Header screenTitle="Contacts" />
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContainer}>

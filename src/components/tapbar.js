@@ -1,12 +1,16 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
-const TapBar = ({changeScreen, screenNames}) => {
+const TapBar = ({navigation, state}) => {
+  if (state?.index === 1 || state?.index === 2) {
+    return null;
+  }
+
   return (
     <View style={styles.root}>
-      {screenNames.map((item, index) => (
-        <TouchableOpacity onPress={() => changeScreen(index)}>
-          <Text style={styles.text}>{item.toUpperCase()}</Text>
+      {state?.routes.map(item => (
+        <TouchableOpacity onPress={() => navigation.navigate(item.name)}>
+          <Text style={styles.text}>{item.name.toUpperCase()}</Text>
         </TouchableOpacity>
       ))}
     </View>

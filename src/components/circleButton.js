@@ -2,10 +2,10 @@ import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import arrow from '../assets/img/arrow.png';
 
-const CircleButton = ({changeScreen}) => {
+const CircleButton = ({goBack}) => {
   return (
     <View style={styles.root}>
-      <TouchableOpacity style={styles.circle} onPress={() => changeScreen(0)}>
+      <TouchableOpacity style={styles.circle} onPress={() => goBack()}>
         <Image style={styles.image} source={arrow} />
       </TouchableOpacity>
     </View>

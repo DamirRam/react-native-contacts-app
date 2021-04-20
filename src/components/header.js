@@ -1,37 +1,36 @@
 import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import CircleButton from './CircleButton';
 
-const Header = ({
-  changeScreen,
-  activeScreen,
-  screenTitles,
-  setIsVisibleModal,
-  activeAlbumIndex,
-}) => {
+const Header = ({screenTitle, activeAlbumNumber, setIsVisibleModal}) => {
+  const navigation = useNavigation();
+
   return (
     <View
       style={[
         styles.root,
         {
-          backgroundColor: activeScreen === 2 ? '#000' : '#fff',
-          justifyContent: activeScreen === 2 ? 'space-between' : 'flex-start',
+          justifyContent:
+            screenTitle === 'Gallery' ? 'space-between' : 'flex-start',
         },
       ]}>
-      {activeScreen === 1 && <CircleButton changeScreen={changeScreen} />}
+      {screenTitle === 'Log in' && (
+        <CircleButton goBack={() => navigation.navigate('Contacts')} />
+      )}
       <Text
         style={[
           styles.headerText,
-          {color: activeScreen === 2 ? '#fff' : '#000'},
+          {color: screenTitle === 'Gallery' ? '#fff' : '#000'},
         ]}>
-        {screenTitles[activeScreen]}
+        {screenTitle}
       </Text>
-      {activeScreen === 2 && (
+      {screenTitle === 'Gallery' && (
         <View style={styles.titleBlock}>
           <TouchableOpacity onPress={() => setIsVisibleModal(true)}>
             <Text style={styles.title}>Select album</Text>
           </TouchableOpacity>
-          <Text style={styles.titleCircle}>{activeAlbumIndex + 1}</Text>
+          <Text style={styles.titleCircle}>{activeAlbumNumber + 1}</Text>
         </View>
       )}
     </View>

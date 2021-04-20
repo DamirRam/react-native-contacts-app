@@ -7,13 +7,17 @@ import {
   Text,
   View,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import Header from '../components/Header';
 
-const Screen_2 = ({changeScreen}) => {
+const Screen_2 = () => {
   const [login, changeLogin] = useState('');
   const [password, changePassword] = useState('');
+  const navigation = useNavigation();
 
   return (
     <View style={styles.root}>
+      <Header screenTitle="Log in" />
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.scrollContainer}>
@@ -31,7 +35,9 @@ const Screen_2 = ({changeScreen}) => {
           secureTextEntry
         />
       </ScrollView>
-      <TouchableOpacity style={styles.button} onPress={() => changeScreen(2)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('Gallery')}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>

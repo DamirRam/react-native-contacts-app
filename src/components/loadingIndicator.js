@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: '50%',
     top: '50%',
+    zIndex: 100,
     width: 34,
     height: 34,
     transform: [{translateX: -17}, {translateY: -17}],

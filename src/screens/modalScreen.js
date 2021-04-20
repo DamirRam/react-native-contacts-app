@@ -7,6 +7,7 @@ const ModalWindow = ({
   setIsVisible,
   activeAlbumIndex,
   setActiveAlbumIndex,
+  setIsLoading,
   asyncHandler,
   dataAlbum,
 }) => {
@@ -19,6 +20,7 @@ const ModalWindow = ({
             onValueChange={(itemValue, itemIndex) => {
               setIsVisible(false);
               setActiveAlbumIndex(itemIndex);
+              setIsLoading(true);
               asyncHandler(itemValue);
             }}
             mode="dropdown"

@@ -1,19 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, FlatList, View, Alert} from 'react-native';
-import AlbumCard from '../components/albumCard';
-import LoadingIndicator from '../components/loadingIndicator';
-import ModalWindow from './modalScreen';
+import AlbumCard from '../components/AlbumCard';
+import LoadingIndicator from '../components/LoadingIndicator';
+import ModalWindow from './ModalScreen';
+import Header from '../components/Header';
 import {dataAlbum} from '../dataAlbum';
 
-const Screen_3 = ({
-  isVisibleModal,
-  setIsVisibleModal,
-  activeAlbumIndex,
-  setActiveAlbumIndex,
-}) => {
+const Screen_3 = () => {
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeAlbumIndex, setActiveAlbumIndex] = useState(0);
+  const [isVisibleModal, setIsVisibleModal] = useState(false);
 
   useEffect(() => {
     asyncHandler(dataAlbum[activeAlbumIndex].value);
@@ -52,11 +50,17 @@ const Screen_3 = ({
 
   return (
     <View style={styles.root}>
+      <Header
+        screenTitle="Gallery"
+        activeAlbumNumber={activeAlbumIndex}
+        setIsVisibleModal={setIsVisibleModal}
+      />
       <ModalWindow
         isVisible={isVisibleModal}
         setIsVisible={setIsVisibleModal}
         activeAlbumIndex={activeAlbumIndex}
         setActiveAlbumIndex={setActiveAlbumIndex}
+        setIsLoading={setIsLoading}
         asyncHandler={asyncHandler}
         dataAlbum={dataAlbum}
       />
