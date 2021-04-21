@@ -10,7 +10,15 @@ import Screen_3 from '../screens/Screen_3';
 import TapBar from '../components/TapBar';
 
 const RootStack = createStackNavigator();
+const SecureStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const SecureScreens = () => (
+  <SecureStack.Navigator initialRouteName="Log in" headerMode="none">
+    <SecureStack.Screen name="Log in" component={Screen_2} />
+    <SecureStack.Screen name="Gallery" component={Screen_3} />
+  </SecureStack.Navigator>
+);
 
 const TabNavigator = () => {
   return (
@@ -21,8 +29,7 @@ const TabNavigator = () => {
         <TapBar navigation={navigation} state={state} />
       )}>
       <RootStack.Screen name="Contacts" component={Screen_1} />
-      <RootStack.Screen name="Log in" component={Screen_2} />
-      <RootStack.Screen name="Gallery" component={Screen_3} />
+      <RootStack.Screen name="Log in" component={SecureScreens} />
     </Tab.Navigator>
   );
 };

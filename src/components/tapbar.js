@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 
 const TapBar = ({navigation, state}) => {
-  if (state?.index === 1 || state?.index === 2) {
+  if (state?.index === 1) {
     return null;
   }
 
