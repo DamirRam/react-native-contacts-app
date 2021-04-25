@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, FlatList, View, Alert} from 'react-native';
+import {StyleSheet, FlatList, View, Alert, BackHandler} from 'react-native';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import AlbumCard from '../components/AlbumCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ModalWindow from './ModalScreen';
@@ -12,10 +13,24 @@ const Screen_3 = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeAlbumIndex, setActiveAlbumIndex] = useState(0);
   const [isVisibleModal, setIsVisibleModal] = useState(false);
+  const navigation = useNavigation();
 
   useEffect(() => {
     asyncHandler(dataAlbum[activeAlbumIndex].value);
   }, [refresh]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
+
+  const onBackPress = () => {
+    navigation.popToTop();
+  };
 
   const asyncHandler = async url => {
     try {

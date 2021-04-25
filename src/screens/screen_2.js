@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import Header from '../components/Header';
 
@@ -27,6 +28,14 @@ const Screen_2 = () => {
   useEffect(() => {
     animateInput.current.animate('wobble', 600);
   }, [animateInputState]);
+
+  const saveAutorized = async value => {
+    try {
+      await AsyncStorage.setItem('autorized', value);
+    } catch (e) {
+      console.log('async storage save error');
+    }
+  };
 
   const handleLogin = () => {
     if (
@@ -58,6 +67,9 @@ const Screen_2 = () => {
       password.toLowerCase() === secureObject.password
     ) {
       alertHandler('Succes', 'Sign in, please wait');
+      saveAutorized(login, password);
+      changePassword('');
+      changeLogin('');
       navigation.navigate('Gallery');
     }
   };
