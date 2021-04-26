@@ -1,18 +1,29 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import ModalPhotoWindow from '../screens/ModalPhotoScreen';
 
 const AlbumCard = ({imageUri, text, albumId}) => {
+  const [isVisible, setIsVisible] = useState(false);
   return (
-    <View style={styles.albumContainer}>
-      <Image style={styles.image} source={{uri: imageUri}} />
-      <View style={styles.albumTextBlock}>
-        <Text style={styles.description}>{text}</Text>
-        <View style={styles.titleBlock}>
-          <Text style={styles.title}>Album</Text>
-          <Text style={styles.titleCircle}>{albumId}</Text>
+    <>
+      <ModalPhotoWindow
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        imageUri={imageUri}
+      />
+      <View style={styles.albumContainer}>
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
+          <Image style={styles.image} source={{uri: imageUri}} />
+        </TouchableOpacity>
+        <View style={styles.albumTextBlock}>
+          <Text style={styles.description}>{text}</Text>
+          <View style={styles.titleBlock}>
+            <Text style={styles.title}>Album</Text>
+            <Text style={styles.titleCircle}>{albumId}</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 

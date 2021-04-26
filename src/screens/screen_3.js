@@ -67,8 +67,10 @@ const Screen_3 = () => {
     <View style={styles.root}>
       <Header
         screenTitle="Gallery"
+        isPhotoModal={false}
         activeAlbumNumber={activeAlbumIndex}
         setIsVisibleModal={setIsVisibleModal}
+        photoModalActive={false}
       />
       <ModalWindow
         isVisible={isVisibleModal}
