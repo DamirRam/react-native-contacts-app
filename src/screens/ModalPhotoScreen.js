@@ -1,27 +1,54 @@
 import React from 'react';
-import {Modal, View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, Text, StyleSheet} from 'react-native';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import CircleButton from '../components/CircleButton';
 
-const ModalWindow = ({isVisible, setIsVisible, imageUri}) => {
+const ModalWindow = ({
+  isVisiblePhotoModal,
+  setIsVisiblePhotoModal,
+  currentImageUri,
+  onSwipeLeft,
+  onSwipeRight,
+}) => {
+  const config = {
+    velocityThreshold: 0.3,
+    directionalOffsetThreshold: 80,
+  };
+
   return (
-    <Modal visible={isVisible} animationType="fade" transparent>
+    <GestureRecognizer
+      onSwipeLeft={onSwipeLeft}
+      onSwipeRight={onSwipeRight}
+      config={config}
+      style={[
+        styles.gestureStyle,
+        {
+          position: 'absolute',
+          zIndex: isVisiblePhotoModal ? 10 : -10,
+          width: isVisiblePhotoModal ? '100%' : 0,
+          height: isVisiblePhotoModal ? '100%' : 0,
+          opacity: isVisiblePhotoModal ? 1 : 0
+        },
+      ]}>
       <View style={styles.header}>
-        <CircleButton goBack={() => setIsVisible(false)} />
+        <CircleButton goBack={() => setIsVisiblePhotoModal(false)} />
         <Text style={styles.headerText}>Gallery</Text>
       </View>
       <View style={styles.modalScreen}>
-        <Image style={styles.image} source={{uri: imageUri}} />
+        <Image style={styles.image} source={{uri: currentImageUri}} />
       </View>
-    </Modal>
+    </GestureRecognizer>
   );
 };
 
 const styles = StyleSheet.create({
+  gestureStyle: {
+    backgroundColor: '#000',
+  },
   modalScreen: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
     opacity: 1,
   },
   image: {

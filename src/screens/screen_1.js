@@ -4,7 +4,7 @@ import UserCard from '../components/UserCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import Header from '../components/Header';
 
-const dataUsersUrl = 'https://randomuser.me/api/?results=20';
+const dataUsersUrl = 'https://randomuser.me/api/?results=3';
 
 const Screen_1 = () => {
   const [data, setData] = useState([]);
