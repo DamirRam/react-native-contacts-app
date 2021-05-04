@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import CircleButton from '../components/CircleButton';
 
 const ModalWindow = ({
-  isVisiblePhotoModal,
-  setIsVisiblePhotoModal,
-  currentImageUri,
+  isVisibleContactsModal,
+  setIsVisibleContactsModal,
+  currentUser,
   onSwipeLeft,
   onSwipeRight,
 }) => {
@@ -23,19 +23,19 @@ const ModalWindow = ({
       style={[
         styles.gestureStyle,
         {
-          position: 'absolute',
-          zIndex: isVisiblePhotoModal ? 10 : -10,
-          width: isVisiblePhotoModal ? '100%' : 0,
-          height: isVisiblePhotoModal ? '100%' : 0,
-          opacity: isVisiblePhotoModal ? 1 : 0
+          zIndex: isVisibleContactsModal ? 10 : -10,
+          width: isVisibleContactsModal ? '100%' : 0,
+          height: isVisibleContactsModal ? '100%' : 0,
+          opacity: isVisibleContactsModal ? 0.8 : 0,
         },
       ]}>
       <View style={styles.header}>
-        <CircleButton goBack={() => setIsVisiblePhotoModal(false)} />
-        <Text style={styles.headerText}>Gallery</Text>
+        <CircleButton goBack={() => setIsVisibleContactsModal(false)} />
       </View>
       <View style={styles.modalScreen}>
-        <Image style={styles.image} source={{uri: currentImageUri}} />
+        <View style={styles.mainIco} />
+        <Text style={styles.mainName}>{currentUser.username}</Text>
+        <Text style={styles.mainPhone}>Phone: {currentUser.phone}</Text>
       </View>
     </GestureRecognizer>
   );
@@ -43,7 +43,8 @@ const ModalWindow = ({
 
 const styles = StyleSheet.create({
   gestureStyle: {
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
+    position: 'absolute',
   },
   modalScreen: {
     flex: 1,
@@ -64,12 +65,22 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingRight: 10,
     width: '100%',
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
   },
   headerText: {
     paddingLeft: 10,
     fontSize: 35,
     color: '#fff',
+  },
+  mainPhone: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: '#00add3',
+  },
+  mainName: {
+    fontSize: 25,
+    fontWeight: '700',
+    color: '#00add3',
   },
 });
 

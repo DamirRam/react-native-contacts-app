@@ -52,12 +52,16 @@ const UserCard = props => {
             source={{uri: props.data.picture.medium}}
           />
         </View>
-        <View style={styles.mainText}>
+        <TouchableOpacity
+          style={styles.mainText}
+          onPress={() => {
+            props.modalContactsHandle(props.index);
+          }}>
           <Text style={styles.mainName}>
             {`${props.data.name.title} ${props.data.name.first} ${props.data.name.last}`}
           </Text>
           <Text style={styles.mainPhone}>Phone: {props.data.phone}</Text>
-        </View>
+        </TouchableOpacity>
       </View>
       {isHidden ? (
         <View style={styles.hiddenBox}>
