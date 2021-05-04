@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, ScrollView, Alert, View} from 'react-native';
-import UserCard from '../components/UserCard';
+import {StyleSheet, Alert, View} from 'react-native';
+import UsersList from '../components/UsersList';
 import LoadingIndicator from '../components/LoadingIndicator';
 import Header from '../components/Header';
 
@@ -41,13 +41,7 @@ const Screen_1 = () => {
     <View style={styles.container}>
       {isLoading && <LoadingIndicator />}
       <Header screenTitle="Contacts" />
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.scrollContainer}>
-        {data.map((user, index) => {
-          return <UserCard data={user} index={index} />;
-        })}
-      </ScrollView>
+      <UsersList data={data} />
     </View>
   );
 };
@@ -55,12 +49,6 @@ const Screen_1 = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 25,
-    paddingBottom: 70,
   },
 });
 

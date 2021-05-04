@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAppState} from '@react-native-community/hooks';
 
 const TapBar = ({navigation, state}) => {
-  console.log('::' + JSON.stringify(state));
   const [isAutorized, setIsAutorized] = useState(false);
   const currentAppState = useAppState();
 
