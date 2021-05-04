@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
     width: 265,
     height: 51,
     flex: 1,
-    zIndex: 5,
     alignSelf: 'center',
     justifyContent: 'space-around',
     flexDirection: 'row',
