@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {
+  Keyboard,
   StyleSheet,
-  ScrollView,
   TextInput,
   TouchableOpacity,
   Text,
   View,
   Alert,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,8 +22,10 @@ const secureObject = {
 const Screen_2 = () => {
   const [login, changeLogin] = useState('');
   const [password, changePassword] = useState('');
+
   const [animateInputState, setAnimateInputState] = useState(true);
   const animateInput = useRef(null);
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -80,25 +83,31 @@ const Screen_2 = () => {
   return (
     <View style={styles.root}>
       <Header screenTitle="Log in" />
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.scrollContainer}>
-        <Animatable.View style={styles.scrollView} ref={animateInput}>
-          <TextInput
-            style={styles.input}
-            onChangeText={changeLogin}
-            value={login}
-            placeholder={'Enter your Login'}
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={changePassword}
-            value={password}
-            placeholder={'Enter your Password'}
-            secureTextEntry
-          />
-        </Animatable.View>
-      </ScrollView>
+      <TouchableWithoutFeedback
+        style={styles.rootBox}
+        onPress={Keyboard.dismiss}>
+        <View style={styles.container}>
+          <Animatable.View style={styles.scrollView} ref={animateInput}>
+            <TextInput
+              style={styles.input}
+              onChangeText={changeLogin}
+              value={login}
+              placeholder={'Enter your Login'}
+            />
+            <TextInput
+              style={styles.input}
+              onChangeText={changePassword}
+              value={password}
+              placeholder={'Enter your Password'}
+              secureTextEntry
+              onEndEditing={() => {
+                Keyboard.dismiss();
+                handleLogin();
+              }}
+            />
+          </Animatable.View>
+        </View>
+      </TouchableWithoutFeedback>
       <TouchableOpacity style={styles.button} onPress={() => handleLogin()}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
@@ -110,10 +119,10 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-  container: {
+  rootBox: {
     flex: 1,
   },
-  scrollContainer: {
+  container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
