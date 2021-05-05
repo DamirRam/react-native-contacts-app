@@ -55,7 +55,7 @@ const UserCard = props => {
         <TouchableOpacity
           style={styles.mainText}
           onPress={() => {
-            props.contactsModalHandle(props.index);
+            props.contactsModalOpenHandle(props.index);
           }}>
           <Text style={styles.mainName}>
             {`${props.data.name.title} ${props.data.name.first} ${props.data.name.last}`}

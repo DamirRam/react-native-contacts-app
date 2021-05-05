@@ -5,7 +5,7 @@ import Header from '../components/Header';
 
 const ModalWindow = ({
   isVisibleContactsModal,
-  setIsVisibleContactsModal,
+  contactsModalCloseHandle,
   currentUser,
   onSwipeLeft,
   onSwipeRight,
@@ -32,7 +32,7 @@ const ModalWindow = ({
       ]}>
       <Header
         circleButton={true}
-        circleButtonHandler={() => setIsVisibleContactsModal(false)}
+        circleButtonHandler={() => contactsModalCloseHandle()}
       />
       <View style={styles.modalScreen}>
         <Text style={styles.mainName}>{currentUser.username}</Text>

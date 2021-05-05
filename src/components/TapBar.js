@@ -5,10 +5,12 @@ import {useAppState} from '@react-native-community/hooks';
 
 const TapBar = ({navigation, state}) => {
   const [isAutorized, setIsAutorized] = useState(false);
+  const [hideTapBar, setHideTapBar] = useState(false);
   const currentAppState = useAppState();
 
   useEffect(() => {
     getAutorized();
+    state.setHideTapBar = setHideTapBar;
   });
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const TapBar = ({navigation, state}) => {
     }
   };
 
-  if (state?.index === 1) {
+  if (state?.index === 1 || hideTapBar) {
     return null;
   }
 

@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, Alert, View, ScrollView} from 'react-native';
+import {useNavigationState} from '@react-navigation/native';
 import UserCard from '../components/UserCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ModalContactsScreen from '../screens/ModalContactsScreen';
@@ -15,6 +16,8 @@ const Screen_1 = () => {
   const [isVisibleContactsModal, setIsVisibleContactsModal] = useState(false);
   const [indexOfUser, setIndexOfUser] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+
+  const navigationState = useNavigationState(state => state);
 
   useEffect(() => {
     fetchHandler();
@@ -53,9 +56,15 @@ const Screen_1 = () => {
     ]);
   };
 
-  const contactsModalHandle = index => {
+  const contactsModalOpenHandle = index => {
     setIndexOfUser(index);
     setIsVisibleContactsModal(true);
+    navigationState.setHideTapBar(true);
+  };
+
+  const contactsModalCloseHandle = () => {
+    setIsVisibleContactsModal(false);
+    navigationState.setHideTapBar(false);
   };
 
   const onSwipeLeft = () => {
@@ -85,7 +94,7 @@ const Screen_1 = () => {
     <>
       <ModalContactsScreen
         isVisibleContactsModal={isVisibleContactsModal}
-        setIsVisibleContactsModal={setIsVisibleContactsModal}
+        contactsModalCloseHandle={contactsModalCloseHandle}
         currentUser={currentUser}
         onSwipeLeft={onSwipeLeft}
         onSwipeRight={onSwipeRight}
@@ -101,7 +110,7 @@ const Screen_1 = () => {
               <UserCard
                 data={user}
                 index={index}
-                contactsModalHandle={contactsModalHandle}
+                contactsModalOpenHandle={contactsModalOpenHandle}
               />
             );
           })}
