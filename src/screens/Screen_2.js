@@ -82,7 +82,11 @@ const Screen_2 = () => {
 
   return (
     <View style={styles.root}>
-      <Header screenTitle="Log in" />
+      <Header
+        screenTitle="Log in"
+        circleButton={true}
+        circleButtonHandler={() => navigation.navigate('Contacts')}
+      />
       <TouchableWithoutFeedback
         style={styles.rootBox}
         onPress={Keyboard.dismiss}>

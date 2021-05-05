@@ -107,10 +107,9 @@ const Screen_3 = () => {
     <View style={styles.root}>
       <Header
         screenTitle="Gallery"
-        isPhotoModal={false}
+        selectAlbum={true}
         activeAlbumNumber={activeAlbumIndex}
         setIsVisibleModal={setIsVisiblePickerModal}
-        photoModalActive={false}
       />
       <ModalPickerWindow
         isVisible={isVisiblePickerModal}

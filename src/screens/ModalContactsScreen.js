@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import CircleButton from '../components/CircleButton';
+import Header from '../components/Header';
 
 const ModalWindow = ({
   isVisibleContactsModal,
@@ -30,10 +30,10 @@ const ModalWindow = ({
           opacity: isVisibleContactsModal ? 0.9 : 0,
         },
       ]}>
-      <View style={styles.header}>
-        <CircleButton goBack={() => setIsVisibleContactsModal(false)} />
-        <Text style={styles.headerText}>Gallery</Text>
-      </View>
+      <Header
+        circleButton={true}
+        circleButtonHandler={() => setIsVisibleContactsModal(false)}
+      />
       <View style={styles.modalScreen}>
         <Text style={styles.mainName}>{currentUser.username}</Text>
         <Text style={styles.mainPhone}>Phone: {currentUser.phone}</Text>
@@ -52,16 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     opacity: 1,
   },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingTop: 31,
-    paddingBottom: 10,
-    paddingRight: 10,
-    width: '100%',
-    backgroundColor: '#fff',
-  },
   mainPhone: {
     fontSize: 16,
     fontWeight: '400',
@@ -71,11 +61,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '700',
     color: '#00add3',
-  },
-  headerText: {
-    paddingLeft: 10,
-    fontSize: 35,
-    color: '#fff',
   },
 });
 

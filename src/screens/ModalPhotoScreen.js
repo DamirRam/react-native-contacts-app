@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import CircleButton from '../components/CircleButton';
+import Header from '../components/Header';
 
 const ModalWindow = ({
   isVisiblePhotoModal,
@@ -27,13 +27,14 @@ const ModalWindow = ({
           zIndex: isVisiblePhotoModal ? 10 : -10,
           width: isVisiblePhotoModal ? '100%' : 0,
           height: isVisiblePhotoModal ? '100%' : 0,
-          opacity: isVisiblePhotoModal ? 1 : 0
+          opacity: isVisiblePhotoModal ? 1 : 0,
         },
       ]}>
-      <View style={styles.header}>
-        <CircleButton goBack={() => setIsVisiblePhotoModal(false)} />
-        <Text style={styles.headerText}>Gallery</Text>
-      </View>
+      <Header
+        screenTitle="Gallery"
+        circleButton={true}
+        circleButtonHandler={() => setIsVisiblePhotoModal(false)}
+      />
       <View style={styles.modalScreen}>
         <Image style={styles.image} source={{uri: currentImageUri}} />
       </View>
