@@ -20,17 +20,28 @@ const Screen_3 = () => {
   const [indexOfImage, setIndexOfImage] = useState(null);
   const [currentImageUri, setCurrentImageUri] = useState(null);
 
+  const [updatedData, setUpdatedData] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const navigation = useNavigation();
 
   useEffect(() => {
-    asyncHandler(dataAlbum[activeAlbumIndex].value);
-  }, [refresh]);
+    asyncHandler(dataAlbum[activeAlbumIndex].value, pageNumber);
+  }, [refresh, pageNumber]);
 
   useEffect(() => {
     if (indexOfImage !== null) {
-      setCurrentImageUri(data[indexOfImage].thumbnailUrl);
+      setCurrentImageUri(updatedData[indexOfImage].thumbnailUrl);
     }
   }, [indexOfImage, isLoading]);
+
+  useEffect(() => {
+    if (pageNumber === 1) {
+      setUpdatedData(data);
+    } else {
+      setUpdatedData(updatedData.concat(data));
+    }
+  }, [data]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -40,9 +51,17 @@ const Screen_3 = () => {
     }, []),
   );
 
-  const asyncHandler = async url => {
+  const pageHandle = () => {
+    if (pageNumber < 5) {
+      setPageNumber(pageNumber + 1);
+    } else {
+      null;
+    }
+  };
+
+  const asyncHandler = async (url, page) => {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url + page);
       const albums = await response.json();
       setData(albums);
       setIsLoading(false);
@@ -73,7 +92,7 @@ const Screen_3 = () => {
   };
 
   const onSwipeLeft = () => {
-    const dataLength = data.length - 1;
+    const dataLength = updatedData.length - 1;
     if (indexOfImage < dataLength) {
       setIndexOfImage(indexOfImage + 1);
     }
@@ -116,6 +135,8 @@ const Screen_3 = () => {
         setIsVisible={setIsVisiblePickerModal}
         activeAlbumIndex={activeAlbumIndex}
         setActiveAlbumIndex={setActiveAlbumIndex}
+        setUpdatedData={setUpdatedData}
+        setPageNumber={setPageNumber}
         setIsLoading={setIsLoading}
         asyncHandler={asyncHandler}
         dataAlbum={dataAlbum}
@@ -128,7 +149,14 @@ const Screen_3 = () => {
         onSwipeRight={onSwipeRight}
       />
       {isLoading && <LoadingIndicator />}
-      <FlatList data={data} renderItem={renderCard} />
+      <FlatList
+        data={updatedData}
+        renderItem={renderCard}
+        extraData={updatedData}
+        keyExtractor={(item, index) => index}
+        onEndReachedThreshold="0.9"
+        onEndReached={() => pageHandle()}
+      />
     </View>
   );
 };

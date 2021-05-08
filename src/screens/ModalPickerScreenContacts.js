@@ -5,40 +5,30 @@ import {Picker} from '@react-native-picker/picker';
 const ModalWindow = ({
   isVisible,
   setIsVisible,
-  activeAlbumIndex,
-  setActiveAlbumIndex,
-  setIsLoading,
-  setPageNumber,
-  setUpdatedData,
-  asyncHandler,
-  dataAlbum,
+  filterValue,
+  setFilterValue,
+  filterData,
 }) => {
   return (
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalScreen}>
         <View style={styles.modalInner}>
           <Picker
-            selectedValue={dataAlbum[activeAlbumIndex].value}
-            onValueChange={(itemValue, itemIndex) => {
+            selectedValue={filterValue}
+            onValueChange={itemValue => {
               setIsVisible(false);
-              setActiveAlbumIndex(itemIndex);
-              setIsLoading(true);
-              asyncHandler(itemValue);
-              setPageNumber(1);
-              setUpdatedData([]);
+              setFilterValue(itemValue);
+              filterData(itemValue);
             }}
             mode="dropdown"
-            dropdownIconColor="#fff"
+            dropdownIconColor="#000"
             style={styles.pickerBox}>
-            {dataAlbum.map(item => {
-              return (
-                <Picker.Item
-                  style={styles.pickerText}
-                  label={item.title}
-                  value={item.value}
-                />
-              );
-            })}
+            <Picker.Item style={styles.pickerText} label="male" value="male" />
+            <Picker.Item
+              style={styles.pickerText}
+              label="female"
+              value="female"
+            />
           </Picker>
         </View>
       </View>
@@ -51,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     opacity: 0.8,
   },
   modalInner: {
@@ -59,7 +49,7 @@ const styles = StyleSheet.create({
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: '#444444',
     borderRadius: 15,
@@ -67,11 +57,12 @@ const styles = StyleSheet.create({
   },
   pickerBox: {
     width: 250,
-    height: 220,
+    height: 120,
   },
   pickerText: {
-    color: '#fff',
-    backgroundColor: '#000',
+    color: '#000',
+    fontSize: 18,
+    backgroundColor: '#fff',
     borderColor: '#444',
     borderWidth: 1,
   },

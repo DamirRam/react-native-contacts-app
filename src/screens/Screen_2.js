@@ -71,8 +71,6 @@ const Screen_2 = () => {
     ) {
       alertHandler('Succes', 'Sign in, please wait');
       saveAutorized(login, password);
-      changePassword('');
-      changeLogin('');
       navigation.navigate('Gallery');
     }
   };

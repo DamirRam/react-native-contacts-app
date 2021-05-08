@@ -9,13 +9,17 @@ const Header = ({
   circleButtonHandler,
   activeAlbumNumber,
   setIsVisibleModal,
+  setIsVisibleModalContacts,
+  filter,
+  filterValue,
 }) => {
   return (
     <View
       style={[
         styles.root,
         {
-          justifyContent: selectAlbum === true ? 'space-between' : 'flex-start',
+          justifyContent:
+            selectAlbum || filter === true ? 'space-between' : 'flex-start',
         },
       ]}>
       {circleButton === true && (
@@ -34,6 +38,16 @@ const Header = ({
             <Text style={styles.title}>Select album</Text>
           </TouchableOpacity>
           <Text style={styles.titleCircle}>{activeAlbumNumber + 1}</Text>
+        </View>
+      )}
+      {filter === true && (
+        <View style={styles.titleBlockContacts}>
+          {filterValue !== 'gender' && (
+            <CircleButton goBack={() => circleButtonHandler()} crossOn={true} />
+          )}
+          <TouchableOpacity onPress={() => setIsVisibleModalContacts(true)}>
+            <Text style={styles.titleContacts}>{filterValue}</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -63,8 +77,19 @@ const styles = StyleSheet.create({
     marginRight: 5,
     color: '#00ADD3',
     fontSize: 26,
-    borderWidth: 1,
     borderBottomColor: '#00ADD3',
+  },
+  titleBlockContacts: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  titleContacts: {
+    width: 90,
+    marginLeft: 5,
+    marginRight: 5,
+    color: '#0A0A0A',
+    textAlign: 'right',
+    fontSize: 26,
   },
   titleCircle: {
     height: 36,

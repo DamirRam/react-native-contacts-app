@@ -1,12 +1,17 @@
 import React from 'react';
 import {StyleSheet, Image, View, TouchableOpacity} from 'react-native';
 import arrow from '../assets/img/arrow.png';
+import cross from '../assets/img/cross.png';
 
-const CircleButton = ({goBack}) => {
+const CircleButton = ({goBack, crossOn}) => {
   return (
     <View style={styles.root}>
       <TouchableOpacity style={styles.circle} onPress={() => goBack()}>
-        <Image style={styles.image} source={arrow} />
+        {crossOn ? (
+          <Image style={styles.image} source={cross} />
+        ) : (
+          <Image style={styles.image} source={arrow} />
+        )}
       </TouchableOpacity>
     </View>
   );

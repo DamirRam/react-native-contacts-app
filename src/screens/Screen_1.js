@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Alert, View, ScrollView} from 'react-native';
+import {StyleSheet, Alert, View, FlatList} from 'react-native';
 import {useNavigationState} from '@react-navigation/native';
 import UserCard from '../components/UserCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ModalContactsScreen from '../screens/ModalContactsScreen';
+import ModalPickerWindow from './ModalPickerScreenContacts';
 import Header from '../components/Header';
 
-const dataUsersUrl = 'https://randomuser.me/api/?results=10';
+const dataUsersUrl = 'https://randomuser.me/api/?results=10&_page=';
 
 const Screen_1 = () => {
   const [data, setData] = useState([]);
@@ -17,14 +18,21 @@ const Screen_1 = () => {
   const [indexOfUser, setIndexOfUser] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
 
+  const [isVisiblePickerModal, setIsVisiblePickerModal] = useState(false);
+  const [filterValue, setFilterValue] = useState('gender');
+
+  const [updatedData, setUpdatedData] = useState([]);
+  const [outputData, setOutputData] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const navigationState = useNavigationState(state => state);
 
   useEffect(() => {
-    fetchHandler();
-  }, [refresh]);
+    fetchHandler(dataUsersUrl, pageNumber);
+  }, [refresh, pageNumber]);
 
   useEffect(() => {
-    const user = data[indexOfUser];
+    const user = updatedData[indexOfUser];
     if (!isLoading) {
       const userData = {
         username: `${user?.name.title} ${user?.name.first} ${user?.name.last}`,
@@ -34,8 +42,39 @@ const Screen_1 = () => {
     }
   }, [indexOfUser]);
 
-  const fetchHandler = () => {
-    fetch(dataUsersUrl)
+  useEffect(() => {
+    if (pageNumber === 1) {
+      setUpdatedData(data);
+    } else {
+      setUpdatedData(updatedData.concat(data));
+    }
+  }, [data]);
+
+  useEffect(() => {
+    filterData(filterValue);
+  }, [updatedData, filterValue]);
+
+  const pageHandle = () => {
+    if (pageNumber < 5) {
+      setPageNumber(pageNumber + 1);
+    } else {
+      null;
+    }
+  };
+
+  const filterData = filterValue => {
+    if (filterValue === 'gender') {
+      setOutputData(updatedData);
+    } else {
+      const filteredData = updatedData.filter(
+        item => item.gender === filterValue,
+      );
+      setOutputData(filteredData);
+    }
+  };
+
+  const fetchHandler = (url, page) => {
+    fetch(url + page)
       .then(response => response.json())
       .then(responseJson => setData(responseJson.results))
       .catch(error => {
@@ -68,7 +107,7 @@ const Screen_1 = () => {
   };
 
   const onSwipeLeft = () => {
-    const dataLength = data.length - 1;
+    const dataLength = updatedData.length - 1;
     if (indexOfUser < dataLength) {
       setIndexOfUser(indexOfUser + 1);
     }
@@ -90,6 +129,16 @@ const Screen_1 = () => {
     }
   };
 
+  const renderCard = ({item, index}) => {
+    return (
+      <UserCard
+        data={item}
+        index={index}
+        contactsModalOpenHandle={contactsModalOpenHandle}
+      />
+    );
+  };
+
   return (
     <>
       <ModalContactsScreen
@@ -99,22 +148,32 @@ const Screen_1 = () => {
         onSwipeLeft={onSwipeLeft}
         onSwipeRight={onSwipeRight}
       />
+      <ModalPickerWindow
+        isVisible={isVisiblePickerModal}
+        setIsVisible={setIsVisiblePickerModal}
+        filterValue={filterValue}
+        setFilterValue={setFilterValue}
+        filterData={filterData}
+      />
       <View style={styles.container}>
         {isLoading && <LoadingIndicator />}
-        <Header screenTitle="Contacts" />
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.scrollContainer}>
-          {data?.map((user, index) => {
-            return (
-              <UserCard
-                data={user}
-                index={index}
-                contactsModalOpenHandle={contactsModalOpenHandle}
-              />
-            );
-          })}
-        </ScrollView>
+        <Header
+          screenTitle="Contacts"
+          filter={true}
+          setIsVisibleModalContacts={setIsVisiblePickerModal}
+          filterValue={filterValue}
+          circleButtonHandler={() => setFilterValue('gender')}
+        />
+        <FlatList
+          data={outputData}
+          renderItem={renderCard}
+          extraData={outputData}
+          keyExtractor={(item, index) => index}
+          ListFooterComponent={<View />}
+          ListFooterComponentStyle={styles.flatlist}
+          onEndReachedThreshold="0.9"
+          onEndReached={() => pageHandle()}
+        />
       </View>
     </>
   );
@@ -123,12 +182,10 @@ const Screen_1 = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 25,
-    paddingBottom: 70,
+  },
+  flatlist: {
+    height: 70,
   },
 });
 
