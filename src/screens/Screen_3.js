@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, FlatList, View, Alert, BackHandler} from 'react-native';
+import {StyleSheet, FlatList, View, BackHandler} from 'react-native';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import AlbumCard from '../components/AlbumCard';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -7,6 +7,12 @@ import ModalPickerWindow from './ModalPickerScreen';
 import ModalPhotoWindow from '../screens/ModalPhotoScreen';
 import Header from '../components/Header';
 import {dataAlbum} from '../dataAlbum';
+import {
+  asyncHandler,
+  pageDataHandle,
+  onSwipeLeft,
+  onSwipeRight,
+} from '../helpers';
 
 const Screen_3 = () => {
   const [data, setData] = useState([]);
@@ -26,8 +32,15 @@ const Screen_3 = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    asyncHandler(dataAlbum[activeAlbumIndex].value, pageNumber);
-  }, [refresh, pageNumber]);
+    asyncHandler(
+      dataAlbum[activeAlbumIndex].url,
+      pageNumber,
+      setData,
+      setIsLoading,
+      refresh,
+      setRefresh,
+    );
+  }, [refresh, pageNumber, activeAlbumIndex]);
 
   useEffect(() => {
     if (indexOfImage !== null) {
@@ -51,37 +64,6 @@ const Screen_3 = () => {
     }, []),
   );
 
-  const pageHandle = () => {
-    if (pageNumber < 5) {
-      setPageNumber(pageNumber + 1);
-    } else {
-      null;
-    }
-  };
-
-  const asyncHandler = async (url, page) => {
-    try {
-      const response = await fetch(url + page);
-      const albums = await response.json();
-      setData(albums);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      AlertHandler(error);
-    }
-  };
-
-  const AlertHandler = error => {
-    Alert.alert(`${error}`, 'Resend the request?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => setRefresh(!refresh)},
-    ]);
-  };
-
   const onBackPress = () => {
     navigation.popToTop();
   };
@@ -89,27 +71,6 @@ const Screen_3 = () => {
   const photoModalHandle = index => {
     setIndexOfImage(index);
     setIsVisiblePhotoModal(true);
-  };
-
-  const onSwipeLeft = () => {
-    const dataLength = updatedData.length - 1;
-    if (indexOfImage < dataLength) {
-      setIndexOfImage(indexOfImage + 1);
-    }
-    if (indexOfImage === dataLength) {
-      Alert.alert('Message', 'This is the end of the gallery.', [{text: 'ОК'}]);
-    }
-  };
-
-  const onSwipeRight = () => {
-    if (indexOfImage > 0) {
-      setIndexOfImage(indexOfImage - 1);
-    }
-    if (indexOfImage === 0) {
-      Alert.alert('Message', 'This is the beginning of the gallery.', [
-        {text: 'ОК'},
-      ]);
-    }
   };
 
   const renderCard = ({item, index}) => (
@@ -138,15 +99,18 @@ const Screen_3 = () => {
         setUpdatedData={setUpdatedData}
         setPageNumber={setPageNumber}
         setIsLoading={setIsLoading}
-        asyncHandler={asyncHandler}
         dataAlbum={dataAlbum}
       />
       <ModalPhotoWindow
         isVisiblePhotoModal={isVisiblePhotoModal}
         setIsVisiblePhotoModal={setIsVisiblePhotoModal}
         currentImageUri={currentImageUri}
-        onSwipeLeft={onSwipeLeft}
-        onSwipeRight={onSwipeRight}
+        onSwipeLeft={() =>
+          onSwipeLeft(updatedData, indexOfImage, setIndexOfImage, 'gallery')
+        }
+        onSwipeRight={() =>
+          onSwipeRight(indexOfImage, setIndexOfImage, 'gallery')
+        }
       />
       {isLoading && <LoadingIndicator />}
       <FlatList
@@ -155,7 +119,7 @@ const Screen_3 = () => {
         extraData={updatedData}
         keyExtractor={(item, index) => index}
         onEndReachedThreshold="0.9"
-        onEndReached={() => pageHandle()}
+        onEndReached={() => pageDataHandle(pageNumber, setPageNumber)}
       />
     </View>
   );

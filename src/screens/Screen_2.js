@@ -6,13 +6,13 @@ import {
   TouchableOpacity,
   Text,
   View,
-  Alert,
   TouchableWithoutFeedback,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Animatable from 'react-native-animatable';
 import Header from '../components/Header';
+import {alertHandler} from '../helpers';
 
 const secureObject = {
   login: 'admin',
@@ -69,14 +69,11 @@ const Screen_2 = () => {
       login.toLowerCase() === secureObject.login &&
       password.toLowerCase() === secureObject.password
     ) {
-      alertHandler('Succes', 'Sign in, please wait');
       saveAutorized(login, password);
       navigation.navigate('Gallery');
+      alertHandler('Succes', 'Sign in, please wait');
     }
   };
-
-  const alertHandler = (title, message) =>
-    Alert.alert(title, message, [{text: 'ОК'}]);
 
   return (
     <View style={styles.root}>

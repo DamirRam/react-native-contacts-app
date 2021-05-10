@@ -1,23 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Modal, View, StyleSheet} from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 
-const ModalWindow = ({
-  isVisible,
-  setIsVisible,
-  filterValue,
-  setFilterValue,
-  filterData,
-}) => {
+const ModalWindow = ({isVisible, setIsVisible, setFilterValue, filterData}) => {
+  const [pickerValue, setPickerValue] = useState('male');
   return (
     <Modal visible={isVisible} animationType="fade" transparent>
       <View style={styles.modalScreen}>
         <View style={styles.modalInner}>
           <Picker
-            selectedValue={filterValue}
+            selectedValue={pickerValue}
             onValueChange={itemValue => {
               setIsVisible(false);
               setFilterValue(itemValue);
+              setPickerValue(itemValue);
               filterData(itemValue);
             }}
             mode="dropdown"
@@ -45,7 +41,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   modalInner: {
-    width: 363,
+    width: 350,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',

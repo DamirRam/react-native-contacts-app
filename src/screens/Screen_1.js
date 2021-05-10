@@ -1,11 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, Alert, View, FlatList} from 'react-native';
+import {StyleSheet, View, FlatList} from 'react-native';
 import {useNavigationState} from '@react-navigation/native';
 import UserCard from '../components/UserCard';
 import LoadingIndicator from '../components/LoadingIndicator';
 import ModalContactsScreen from '../screens/ModalContactsScreen';
 import ModalPickerWindow from './ModalPickerScreenContacts';
 import Header from '../components/Header';
+import {
+  fetchHandler,
+  onSwipeLeft,
+  onSwipeRight,
+  pageDataHandle,
+} from '../helpers.js';
 
 const dataUsersUrl = 'https://randomuser.me/api/?results=10&_page=';
 
@@ -14,6 +20,10 @@ const Screen_1 = () => {
   const [refresh, setRefresh] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [updatedData, setUpdatedData] = useState([]);
+  const [outputData, setOutputData] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+
   const [isVisibleContactsModal, setIsVisibleContactsModal] = useState(false);
   const [indexOfUser, setIndexOfUser] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
@@ -21,18 +31,21 @@ const Screen_1 = () => {
   const [isVisiblePickerModal, setIsVisiblePickerModal] = useState(false);
   const [filterValue, setFilterValue] = useState('gender');
 
-  const [updatedData, setUpdatedData] = useState([]);
-  const [outputData, setOutputData] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
-
   const navigationState = useNavigationState(state => state);
 
   useEffect(() => {
-    fetchHandler(dataUsersUrl, pageNumber);
+    fetchHandler(
+      dataUsersUrl,
+      pageNumber,
+      setData,
+      setIsLoading,
+      refresh,
+      setRefresh,
+    );
   }, [refresh, pageNumber]);
 
   useEffect(() => {
-    const user = updatedData[indexOfUser];
+    const user = outputData[indexOfUser];
     if (!isLoading) {
       const userData = {
         username: `${user?.name.title} ${user?.name.first} ${user?.name.last}`,
@@ -54,45 +67,15 @@ const Screen_1 = () => {
     filterData(filterValue);
   }, [updatedData, filterValue]);
 
-  const pageHandle = () => {
-    if (pageNumber < 5) {
-      setPageNumber(pageNumber + 1);
-    } else {
-      null;
-    }
-  };
-
-  const filterData = filterValue => {
-    if (filterValue === 'gender') {
+  const filterData = filterVal => {
+    if (filterVal === 'gender') {
       setOutputData(updatedData);
     } else {
       const filteredData = updatedData.filter(
-        item => item.gender === filterValue,
+        item => item.gender === filterVal,
       );
       setOutputData(filteredData);
     }
-  };
-
-  const fetchHandler = (url, page) => {
-    fetch(url + page)
-      .then(response => response.json())
-      .then(responseJson => setData(responseJson.results))
-      .catch(error => {
-        setIsLoading(false);
-        AlertHandler(error);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
-  const AlertHandler = error => {
-    Alert.alert(`${error}`, 'Resend the request?', [
-      {
-        text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => setRefresh(!refresh)},
-    ]);
   };
 
   const contactsModalOpenHandle = index => {
@@ -104,29 +87,6 @@ const Screen_1 = () => {
   const contactsModalCloseHandle = () => {
     setIsVisibleContactsModal(false);
     navigationState.setHideTapBar(false);
-  };
-
-  const onSwipeLeft = () => {
-    const dataLength = updatedData.length - 1;
-    if (indexOfUser < dataLength) {
-      setIndexOfUser(indexOfUser + 1);
-    }
-    if (indexOfUser === dataLength) {
-      Alert.alert('Message', 'This is the end of the contacts.', [
-        {text: 'ОК'},
-      ]);
-    }
-  };
-
-  const onSwipeRight = () => {
-    if (indexOfUser > 0) {
-      setIndexOfUser(indexOfUser - 1);
-    }
-    if (indexOfUser === 0) {
-      Alert.alert('Message', 'This is the beginning of the contacts.', [
-        {text: 'ОК'},
-      ]);
-    }
   };
 
   const renderCard = ({item, index}) => {
@@ -145,13 +105,16 @@ const Screen_1 = () => {
         isVisibleContactsModal={isVisibleContactsModal}
         contactsModalCloseHandle={contactsModalCloseHandle}
         currentUser={currentUser}
-        onSwipeLeft={onSwipeLeft}
-        onSwipeRight={onSwipeRight}
+        onSwipeLeft={() =>
+          onSwipeLeft(outputData, indexOfUser, setIndexOfUser, 'contacts')
+        }
+        onSwipeRight={() =>
+          onSwipeRight(indexOfUser, setIndexOfUser, 'contacts')
+        }
       />
       <ModalPickerWindow
         isVisible={isVisiblePickerModal}
         setIsVisible={setIsVisiblePickerModal}
-        filterValue={filterValue}
         setFilterValue={setFilterValue}
         filterData={filterData}
       />
@@ -172,7 +135,7 @@ const Screen_1 = () => {
           ListFooterComponent={<View />}
           ListFooterComponentStyle={styles.flatlist}
           onEndReachedThreshold="0.9"
-          onEndReached={() => pageHandle()}
+          onEndReached={() => pageDataHandle(pageNumber, setPageNumber)}
         />
       </View>
     </>

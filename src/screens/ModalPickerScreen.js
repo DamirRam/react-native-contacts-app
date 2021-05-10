@@ -10,7 +10,6 @@ const ModalWindow = ({
   setIsLoading,
   setPageNumber,
   setUpdatedData,
-  asyncHandler,
   dataAlbum,
 }) => {
   return (
@@ -18,12 +17,11 @@ const ModalWindow = ({
       <View style={styles.modalScreen}>
         <View style={styles.modalInner}>
           <Picker
-            selectedValue={dataAlbum[activeAlbumIndex].value}
+            selectedValue={dataAlbum[activeAlbumIndex].url}
             onValueChange={(itemValue, itemIndex) => {
               setIsVisible(false);
               setActiveAlbumIndex(itemIndex);
               setIsLoading(true);
-              asyncHandler(itemValue);
               setPageNumber(1);
               setUpdatedData([]);
             }}
@@ -35,7 +33,7 @@ const ModalWindow = ({
                 <Picker.Item
                   style={styles.pickerText}
                   label={item.title}
-                  value={item.value}
+                  value={item.url}
                 />
               );
             })}
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   modalInner: {
-    width: 363,
+    width: 350,
     height: 250,
     justifyContent: 'center',
     alignItems: 'center',

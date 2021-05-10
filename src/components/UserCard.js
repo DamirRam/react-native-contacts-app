@@ -78,7 +78,7 @@ const UserCard = props => {
 
 const styles = StyleSheet.create({
   userCard: {
-    width: 363,
+    width: 350,
     height: 'auto',
     paddingBottom: 15,
     marginBottom: 9,
