@@ -1,4 +1,5 @@
-import {Alert} from 'react-native';
+import React from 'react';
+import {Alert, TouchableOpacity, Text, StyleSheet} from 'react-native';
 export const fetchHandler = (
   url,
   page,
@@ -73,6 +74,14 @@ export const pageDataHandle = (pageNumber, setPageNumber) => {
 export const alertHandler = (title, message) =>
   Alert.alert(title, message, [{text: 'ОК'}]);
 
+export const Button = ({buttonText, buttonHandle}) => {
+  return (
+    <TouchableOpacity style={styles.buttonStyle} onPress={buttonHandle}>
+      <Text style={styles.buttonTextStyle}>{buttonText}</Text>
+    </TouchableOpacity>
+  );
+};
+
 const alertRequestHandler = (error, refresh, setRefresh) => {
   Alert.alert(`${error}`, 'Resend the request?', [
     {
@@ -83,3 +92,20 @@ const alertRequestHandler = (error, refresh, setRefresh) => {
     {text: 'OK', onPress: () => setRefresh(!refresh)},
   ]);
 };
+
+const styles = StyleSheet.create({
+  buttonStyle: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '70%',
+    height: 40,
+    backgroundColor: '#00ADD3',
+    borderRadius: 20,
+  },
+  buttonTextStyle: {
+    color: '#fff',
+    textTransform: 'uppercase',
+    fontSize: 16,
+  },
+});

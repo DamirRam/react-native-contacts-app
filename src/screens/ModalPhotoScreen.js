@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {Image, StyleSheet} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../components/Header';
+import {Button} from '../helpers';
 
 const ModalWindow = ({
   isVisiblePhotoModal,
@@ -35,22 +36,19 @@ const ModalWindow = ({
         circleButton={true}
         circleButtonHandler={() => setIsVisiblePhotoModal(false)}
       />
-      <View style={styles.modalScreen}>
-        <Image style={styles.image} source={{uri: currentImageUri}} />
-      </View>
+      <Image style={styles.image} source={{uri: currentImageUri}} />
+      <Button buttonText="download" />
     </GestureRecognizer>
   );
 };
 
 const styles = StyleSheet.create({
   gestureStyle: {
-    backgroundColor: '#000',
-  },
-  modalScreen: {
-    flex: 1,
-    justifyContent: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    opacity: 1,
+    backgroundColor: '#000',
+    paddingBottom: 40,
   },
   image: {
     alignSelf: 'center',
