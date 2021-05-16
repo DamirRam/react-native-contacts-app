@@ -2,7 +2,7 @@ import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../components/Header';
-import {Button} from '../helpers';
+import ButtonDownload from '../components/ButtonDownload';
 
 const ModalWindow = ({
   isVisiblePhotoModal,
@@ -37,7 +37,7 @@ const ModalWindow = ({
         circleButtonHandler={() => setIsVisiblePhotoModal(false)}
       />
       <Image style={styles.image} source={{uri: currentImageUri}} />
-      <Button buttonText="download" />
+      <ButtonDownload buttonText="download" buttonHandle={() => {}} />
     </GestureRecognizer>
   );
 };
