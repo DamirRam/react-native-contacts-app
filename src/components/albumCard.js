@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 
-const AlbumCard = ({imageUri, text, albumId, photoModalHandle, index}) => {
+const AlbumCard = ({imageUri, text, albumId, photoModalHandle, index}) => {//////comments test
   return (
     <View style={styles.albumContainer}>
       <TouchableOpacity onPress={() => photoModalHandle(index)}>
